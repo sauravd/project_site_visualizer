@@ -1,0 +1,69 @@
+{% load i18n static %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Sites Map</title>
+
+  <link rel="stylesheet" href="{% static 'app/app.css' %}">
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script defer src="{% static 'app/app.js' %}"></script>
+</head>
+<body>
+  <header class="hdr" id="hdr">
+  <div class="hdr-left">
+    <img id="logo-left" class="logo" alt="" />
+  </div>
+
+  <div class="hdr-title">
+    <strong id="site-title">Sites Map</strong>
+  </div>
+
+  <div class="hdr-right">
+    <img id="logo-right" class="logo" alt="" />
+    <form class="lang" action="{% url 'set_language' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.path }}"/>
+      <select name="language" onchange="this.form.submit()">
+        <option value="en" {% if LANGUAGE_CODE|slice:":2" == "en" %}selected{% endif %}>English</option>
+        <option value="ar" {% if LANGUAGE_CODE|slice:":2" == "ar" %}selected{% endif %}>العربية</option>
+      </select>
+    </form>
+  </div>
+</header>
+
+
+
+  <section id="filters" class="filters">
+    <select id="filter-trees-range"><option value=""></option></select>
+    <select id="filter-area-range"><option value=""></option></select>
+    <select id="filter-region"><option value="">{% trans 'Region' %}</option></select>
+    <select id="filter-governorate"><option value="">{% trans 'Governorate' %}</option></select>
+    <select id="filter-crop"><option value="">{% trans 'Crop Type' %}</option></select>
+    <select id="filter-water"><option value="">{% trans 'Water Source' %}</option></select>
+    <select id="filter-irr"><option value="">{% trans 'Irrigation System Type' %}</option></select>
+    <input id="filter-farmer" type="search" placeholder="{% trans 'Search name' %}"/>
+    <button id="filter-clear" type="button">{% trans 'Clear' %}</button>
+    <div id="custom-filters" class="custom-filters"></div>
+  </section>
+
+  <div id="map" role="region" aria-label="{% trans 'Map' %}"></div>
+
+  <footer id="ftr" class="ftr">
+        <div class="ftr-inner">
+            <span id="footer-text"></span>
+            <span>&nbsp;— © {% now "Y" %}</span>
+        </div>
+  </footer>
+
+
+  <!-- Labels for popup headings -->
+  <div id="i18n" data-region="{% trans 'Region' %}" data-governorate="{% trans 'Governorate' %}"
+       data-crop-type="{% trans 'Crop Type' %}" data-water-source="{% trans 'Water Source' %}"
+       data-irr-type="{% trans 'Irrigation System Type' %}"
+       data-du="{% trans 'Distribution Uniformity' %}" hidden></div>
+</body>
+</html>
