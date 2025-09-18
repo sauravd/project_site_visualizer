@@ -7,8 +7,8 @@ venv/
 .env.*
 .envrc
 # Django
-staticfiles/
-static/
+/staticfiles/
+#static/
 # If you want the client to get media & db INSIDE the image, keep them in Git.
 # If you DO NOT want them in Git, uncomment these lines:
 # media/
