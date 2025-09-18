@@ -1,0 +1,151 @@
+:root { --hdr:72px; --ftr:44px; }
+*{box-sizing:border-box}
+html,body{height:100%;}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+
+/* ===== Header (center cluster) ===== */
+.hdr{
+  position:fixed; top:0; left:0; right:0; height:var(--hdr);
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  padding:8px 12px; color:#fff; background:#02466b; z-index:1000;
+}
+
+/* Logos right next to the title */
+.hdr-left,.hdr-right{
+  display:flex; align-items:center; justify-content:center;
+  width:auto;
+}
+.hdr .logo{
+  max-height:42px; max-width:140px; object-fit:contain; display:block;
+}
+.hdr-title{
+  font-size:20px; font-weight:600; white-space:nowrap;
+}
+
+/* Place the language selector slightly away from middle, not at the corner */
+.lang{
+  position:absolute;
+  right: max(16px, 5vw);
+  top: 50%;
+  transform: translateY(-50%);
+}
+.hdr .lang select{
+  height:34px; padding:0 8px; border-radius:6px; border:0;
+}
+
+/* ===== Filters (centered row) ===== */
+.filters{
+  position:fixed; top:var(--hdr); left:0; right:0; z-index:900;
+  display:flex; flex-wrap:wrap; gap:8px; background:#fff;
+  padding:8px 12px; border-bottom:1px solid #eee;
+  justify-content:center;
+}
+.filters select, .filters input, .filters button{
+  height:34px; padding:0 8px;
+}
+
+/* ===== Map ===== */
+#map{
+  position:absolute;
+  top:calc(var(--hdr) + 56px);   /* room for filters */
+  bottom:var(--ftr);
+  left:0; right:0;
+  min-height:260px;              /* ensure non-zero height on small screens */
+}
+
+/* ===== Footer ===== */
+.ftr{
+  position:fixed; bottom:0; left:0; right:0; height:var(--ftr);
+  display:flex; align-items:center; justify-content:center; color:#fff;
+  background:#02466b; z-index:1000;
+}
+
+/* ===== Popup styling (wider, neat spacing, visible close button) ===== */
+.leaflet-popup-content-wrapper{
+  border:2px solid #e5e7eb; border-radius:10px;
+  box-shadow:0 6px 20px rgba(0,0,0,.25);
+}
+.leaflet-popup-content{
+  margin: 12px 14px;
+  min-width: 380px;
+  max-width: 560px;
+}
+@media (max-width: 480px){
+  .leaflet-popup-content{ min-width: 260px; max-width: 90vw; }
+}
+
+.leaflet-popup-close-button{
+  width:36px; height:36px; line-height:36px;
+  font-size:22px; color:#111;
+  background:#fff; border-radius:50%;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  opacity:1; right:6px; top:6px;
+}
+
+/* Popup sections */
+.popup .header-line{
+  display:flex; align-items:center; justify-content:center;
+  margin: 0 0 8px 0;
+}
+.popup .code-badge{
+  font-weight:800; font-size:18px;
+  background:#f1f5f9; padding:4px 10px; border-radius:8px;
+  border:1px solid #e5e7eb;
+}
+.popup .meta table{ width:100%; border-collapse:separate; border-spacing:0 4px; }
+.popup .meta table th{
+  text-align:left; padding:2px 6px 2px 0; opacity:.8; font-weight:700; white-space:nowrap;
+}
+.popup .meta table td{
+  text-align:right; padding:2px 0 2px 6px; word-break:break-word;
+}
+.popup .divider{
+  height:1px; background:#eee; margin:10px 0;
+}
+.popup .section-title{
+  margin:2px 0 6px; font-weight:800; opacity:.9;
+}
+.popup .desc{
+  margin-top:2px; line-height:1.45;
+}
+
+/* Gallery */
+.popup .gallery{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+.popup .gallery img{height:72px; border-radius:6px}
+
+/* ===== Lightbox (images/PDF) ===== */
+.lb.hidden{display:none}
+.lb{position:fixed; inset:0; z-index:2000}
+.lb-backdrop{position:absolute; inset:0; background:rgba(0,0,0,0.65)}
+.lb-panel{position:absolute; inset:5%; background:#000; display:flex; align-items:center; justify-content:center}
+.lb-panel iframe, .lb-panel img{width:100%; height:100%; object-fit:contain; background:#111}
+.lb-close{
+  position:absolute; top:12px; right:16px;
+  width:44px; height:44px; border-radius:999px;
+  font-size:24px; line-height:44px; text-align:center;
+  background:#fff; border:none; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.lb-prev, .lb-next{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:48px; height:48px; border-radius:999px;
+  background:rgba(255,255,255,.92); border:none; cursor:pointer;
+  font-size:26px; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.lb-prev{ left:16px; }
+.lb-next{ right:16px; }
+.lb-prev:hover, .lb-next:hover { background:#fff; }
+
+/* ===== RTL tweaks ===== */
+html[dir="rtl"] .hdr{direction:rtl}
+html[dir="rtl"] .filters{direction:rtl}
+
+/* RTL popup mirroring */
+.popup[dir="rtl"] { direction: rtl; text-align: right; }
+.popup[dir="rtl"] .meta table th{ text-align:right; padding:2px 0 2px 6px; }
+.popup[dir="rtl"] .meta table td{ text-align:left;  padding:2px 6px 2px 0; }
+
+/* LTR alignment rule (explicit to make contrast clear) */
+.popup[dir="ltr"] .meta table th{ text-align:left; }
+.popup[dir="ltr"] .meta table td{ text-align:right; }
